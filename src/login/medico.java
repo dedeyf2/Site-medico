@@ -6,31 +6,40 @@ import java.util.Set;
 
 public class medico extends usuario {
     private Set<PlanoDeSaude> planosAceitos;
-    private Scanner scanner = new Scanner(System.in);
+    private Set<Especialidade> especialidades;
+    private transient Scanner scanner = new Scanner(System.in);
 
-    public medico(String nome, int idade, String email,PlanoDeSaude plano, String senha) {
-        super(nome, idade, plano, senha, email);
-        this.planosAceitos = new HashSet<>(); // Começa vazio
-        this.planosAceitos.add(PlanoDeSaude.NENHUM); // Padrão: Nenhum plano
+    public medico(String nome, int idade, String email, PlanoDeSaude plano, Especialidade especialidadePadrao, String senha) {
+        super(nome, idade, plano, email, senha);
+        this.tipo = "medico";
+        this.planosAceitos = new HashSet<>();
+        this.planosAceitos.add(PlanoDeSaude.NENHUM);
+        this.especialidades = new HashSet<>();
+        this.especialidades.add(especialidadePadrao); // Padrão é CLINICO_GERAL
     }
 
     @Override
     public void alterarPlano(PlanoDeSaude planoNovo) {
-        System.out.println("Digite 'A' para adicionar um plano ou 'R' para remover:");
+        System.out.println("Digite 'A' para adicionar um plano ou 'R' para remover um plano:");
         String acao = scanner.nextLine().toUpperCase();
-
         try {
             if (acao.equals("A")) {
                 if (planosAceitos.contains(PlanoDeSaude.NENHUM)) {
-                    planosAceitos.remove(PlanoDeSaude.NENHUM); // Se tiver "NENHUM", remove antes de adicionar novos
+                    planosAceitos.remove(PlanoDeSaude.NENHUM);
                 }
+                System.out.println("Escolha um plano de saúde para adicionar (HAPVIDA, AMIL, PORTO_SAUDE):");
+                String entrada = scanner.nextLine().toUpperCase();
+                planoNovo = PlanoDeSaude.valueOf(entrada);
                 planosAceitos.add(planoNovo);
                 System.out.println("Plano " + planoNovo + " adicionado.");
             } else if (acao.equals("R")) {
+                System.out.println("Escolha um plano de saúde para remover:");
+                String entrada = scanner.nextLine().toUpperCase();
+                planoNovo = PlanoDeSaude.valueOf(entrada);
                 if (planosAceitos.remove(planoNovo)) {
                     System.out.println("Plano " + planoNovo + " removido.");
                     if (planosAceitos.isEmpty()) {
-                        planosAceitos.add(PlanoDeSaude.NENHUM); // Se ficou sem planos, adiciona "NENHUM"
+                        planosAceitos.add(PlanoDeSaude.NENHUM);
                         System.out.println("Nenhum plano cadastrado. Definindo como NENHUM.");
                     }
                 } else {
@@ -39,6 +48,7 @@ public class medico extends usuario {
             } else {
                 System.out.println("Opção inválida.");
             }
+            registro.atualizarUsuario(this);
         } catch (IllegalArgumentException e) {
             System.out.println("Plano inválido, tente outro.");
         }
@@ -46,5 +56,9 @@ public class medico extends usuario {
 
     public Set<PlanoDeSaude> getPlanosAceitos() {
         return planosAceitos;
+    }
+
+    public Set<Especialidade> getEspecialidades() {
+        return especialidades;
     }
 }
