@@ -1,5 +1,6 @@
 package login;
 
+import java.time.LocalDate;
 import java.util.Scanner;
 
 import wrapper.Printer;
@@ -28,5 +29,9 @@ public class paciente extends usuario {
         } catch (IllegalArgumentException e) {
             Printer.println("Plano inválido, tente outro.");
         }
+    }
+
+    public void criarConsulta(usuario medico, LocalDate dataConsulta){
+
     }
 }

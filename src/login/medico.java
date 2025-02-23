@@ -1,15 +1,22 @@
 package login;
 
+import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
 
+import agendamento.Consulta;
 import wrapper.Printer;
 
 public class medico extends usuario {
     private Set<PlanoDeSaude> planosAceitos;
     private Set<Especialidade> especialidades;
     private transient Scanner scanner = new Scanner(System.in);
+    private Map<LocalDate, List<Consulta>> consultasPorDia;
+    private final int MAX_CONSULTAS_POR_DIA = 4;
 
     public medico(String nome, int idade, String email, PlanoDeSaude plano, Especialidade especialidadePadrao, String senha) {
         super(nome, idade, plano, email, senha);
@@ -18,6 +25,7 @@ public class medico extends usuario {
         this.planosAceitos.add(PlanoDeSaude.NENHUM);
         this.especialidades = new HashSet<>();
         this.especialidades.add(especialidadePadrao); // Padrão é CLINICO_GERAL
+        this.consultasPorDia = new HashMap<>();
     }
 
     @Override
