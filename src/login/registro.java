@@ -5,6 +5,8 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.typeadapters.RuntimeTypeAdapterFactory;
 
+import wrapper.Printer;
+
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -24,63 +26,63 @@ public class registro {
         try {
             File arquivo = new File(ARQUIVO_JSON);
             if (!arquivo.exists()) {
-                System.out.println("Criando arquivo JSON...");
+                Printer.println("Criando arquivo JSON...");
                 try (FileWriter writer = new FileWriter(ARQUIVO_JSON)) {
                     writer.write("{}");
-                    System.out.println("Arquivo JSON criado com sucesso!");
+                    Printer.println("Arquivo JSON criado com sucesso!");
                 } catch (IOException e) {
-                    System.out.println("Erro ao criar o arquivo JSON: " + e.getMessage());
+                    Printer.println("Erro ao criar o arquivo JSON: " + e.getMessage());
                 }
             }
 
             Map<String, usuario> usuarios = carregarUsuarios();
-            System.out.println("Você é Médico (M) ou Paciente (P)? ");
+            Printer.println("Você é Médico (M) ou Paciente (P)? ");
             String tipo = scanner.nextLine().trim().toUpperCase();
 
-            System.out.print("Nome: ");
+            Printer.print("Nome: ");
             String nome = scanner.nextLine();
 
-            System.out.print("Idade: ");
+            Printer.print("Idade: ");
             int idade = Integer.parseInt(scanner.nextLine());
 
-            System.out.print("Email: ");
+            Printer.print("Email: ");
             String email = scanner.nextLine();
 
             if (usuarios.containsKey(email)) {
-                System.out.println("Email já usado.");
+                Printer.println("Email já usado.");
                 return;
             }
 
-            System.out.print("Senha: ");
+            Printer.print("Senha: ");
             String senha = scanner.nextLine();
 
             usuario novoUsuario;
             if (tipo.equals("P")) {
-                System.out.println("Escolha um plano de saúde: HAPVIDA, AMIL, PORTO_SAUDE ou NENHUM");
+                Printer.println("Escolha um plano de saúde: HAPVIDA, AMIL, PORTO_SAUDE ou NENHUM");
                 PlanoDeSaude plano = escolherPlano();
                 novoUsuario = new paciente(nome, idade, plano, email, senha);
                 usuarios.put(email, novoUsuario);
             } else if (tipo.equals("M")) {
                 Set<PlanoDeSaude> planosAceitos = new HashSet<>();
                 while (true) {
-                    System.out.println("Adicione um plano de saúde (ou digite 'fim' para encerrar): HAPVIDA, AMIL, PORTO_SAUDE, NENHUM");
+                    Printer.println("Adicione um plano de saúde (ou digite 'fim' para encerrar): HAPVIDA, AMIL, PORTO_SAUDE, NENHUM");
                     String entrada = scanner.nextLine().toUpperCase();
                     if (entrada.equals("FIM")) break;
                     try {
                         planosAceitos.add(PlanoDeSaude.valueOf(entrada));
                     } catch (IllegalArgumentException e) {
-                        System.out.println("Plano inválido, tente novamente.");
+                        Printer.println("Plano inválido, tente novamente.");
                     }
                 }
                 Set<Especialidade> especialidades = new HashSet<>();
                 while (true) {
-                    System.out.println("Adicione uma especialidade (ou digite 'fim' para encerrar): CLINICO_GERAL, NEURO, PEDIATRA, CARDIOLOGISTA");
+                    Printer.println("Adicione uma especialidade (ou digite 'fim' para encerrar): CLINICO_GERAL, NEURO, PEDIATRA, CARDIOLOGISTA");
                     String entrada = scanner.nextLine().toUpperCase();
                     if (entrada.equals("FIM")) break;
                     try {
                         especialidades.add(Especialidade.valueOf(entrada));
                     } catch (IllegalArgumentException e) {
-                        System.out.println("Especialidade inválida, tente novamente.");
+                        Printer.println("Especialidade inválida, tente novamente.");
                     }
                 }
                 novoUsuario = new medico(nome, idade, email, PlanoDeSaude.NENHUM, Especialidade.CLINICO_GERAL, senha);
@@ -93,16 +95,16 @@ public class registro {
                 }
                 usuarios.put(email, novoUsuario);
             } else {
-                System.out.println("Opção inválida!");
+                Printer.println("Opção inválida!");
                 return;
             }
             salvarUsuarios(usuarios);
-            System.out.println("Usuário registrado com sucesso!");
+            Printer.println("Usuário registrado com sucesso!");
         } catch (NumberFormatException e) {
-            System.out.println("Erro: Idade deve ser um número válido.");
+            Printer.println("Erro: Idade deve ser um número válido.");
             e.printStackTrace();
         } catch (Exception e) {
-            System.out.println("Erro inesperado: " + e.getMessage());
+            Printer.println("Erro inesperado: " + e.getMessage());
             e.printStackTrace();
         }
     }
@@ -113,7 +115,7 @@ public class registro {
                 String entrada = scanner.nextLine().toUpperCase();
                 return PlanoDeSaude.valueOf(entrada);
             } catch (IllegalArgumentException e) {
-                System.out.println("Plano inválido, tente novamente.");
+                Printer.println("Plano inválido, tente novamente.");
             }
         }
     }
@@ -140,7 +142,7 @@ public class registro {
 
             return usuarios != null ? usuarios : new HashMap<>();
         } catch (IOException e) {
-            System.out.println("Erro ao carregar usuários: " + e.getMessage());
+            Printer.println("Erro ao carregar usuários: " + e.getMessage());
             return new HashMap<>();
         }
     }
@@ -150,9 +152,9 @@ public class registro {
         if (usuarios.containsKey(usuarioAtualizado.getEmail())) {
             usuarios.put(usuarioAtualizado.getEmail(), usuarioAtualizado);
             salvarUsuarios(usuarios);
-            System.out.println("Dados atualizados com sucesso!");
+            Printer.println("Dados atualizados com sucesso!");
         } else {
-            System.out.println("Usuário não encontrado.");
+            Printer.println("Usuário não encontrado.");
         }
     }
 
@@ -183,7 +185,7 @@ public class registro {
 
             gson.toJson(usuarios, writer);
         } catch (IOException e) {
-            System.out.println("Erro ao salvar usuários: " + e.getMessage());
+            Printer.println("Erro ao salvar usuários: " + e.getMessage());
             throw new RuntimeException("Falha ao salvar os usuários", e);
         }
     }

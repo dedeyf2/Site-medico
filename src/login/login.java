@@ -4,6 +4,8 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.typeadapters.RuntimeTypeAdapterFactory;
 
+import wrapper.Printer;
+
 import java.io.FileReader;
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -12,6 +14,15 @@ import java.util.Map;
 
 public class login {
     private static final String ARQUIVO_JSON = "usuarios.json";
+    private static usuario currentUser;
+
+    public static usuario getCurrentUser() {
+        return currentUser;
+    }
+
+    public static void setCurrentUser(usuario currentUser) {
+        login.currentUser = currentUser;
+    }
 
     public static usuario autenticar(String email, String senha) {
         try {
@@ -19,14 +30,15 @@ public class login {
             if (usuarios.containsKey(email)) {
                 usuario user = usuarios.get(email);
                 if (user.verificarSenha(senha)) {
-                    System.out.println("Login bem-sucedido!");
+                    Printer.println("Login bem-sucedido!");
+                    currentUser = user;
                     return user;
                 }
             }
-            System.out.println("Senha ou usuário não encontrado.");
+            Printer.println("Senha ou usuário não encontrado.");
             return null;
         } catch (Exception e) {
-            System.out.println("Erro ao tentar autenticar: " + e.getMessage());
+            Printer.println("Erro ao tentar autenticar: " + e.getMessage());
             e.printStackTrace();
             return null;
         }
@@ -42,7 +54,7 @@ public class login {
             Type tipo = new TypeToken<Map<String, usuario>>() {}.getType();
             return new GsonBuilder().registerTypeAdapterFactory(adapter).create().fromJson(reader, tipo);
         } catch (IOException e) {
-            System.out.println("Erro ao carregar usuários do arquivo JSON: " + e.getMessage());
+            Printer.println("Erro ao carregar usuários do arquivo JSON: " + e.getMessage());
             e.printStackTrace();
             return new HashMap<>();
         }

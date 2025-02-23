@@ -1,8 +1,8 @@
 package login;
 
-import java.util.HashSet;
 import java.util.Scanner;
-import java.util.Set;
+
+import wrapper.Printer;
 
 public class paciente extends usuario {
     private transient Scanner scanner = new Scanner(System.in);
@@ -14,7 +14,7 @@ public class paciente extends usuario {
 
     @Override
     public void alterarPlano(PlanoDeSaude planoNovo) {
-        System.out.println("Escolha um novo plano de saúde (HAPVIDA, AMIL, PORTO_SAUDE, NENHUM):");
+        Printer.println("Escolha um novo plano de saúde (HAPVIDA, AMIL, PORTO_SAUDE, NENHUM):");
         try {
             String entrada = scanner.nextLine().toUpperCase();
             planoNovo = PlanoDeSaude.valueOf(entrada);
@@ -24,9 +24,9 @@ public class paciente extends usuario {
                 this.plano = PlanoDeSaude.NENHUM;
             }
             registro.atualizarUsuario(this);
-            System.out.println("Plano alterado com sucesso!");
+            Printer.println("Plano alterado com sucesso!");
         } catch (IllegalArgumentException e) {
-            System.out.println("Plano inválido, tente outro.");
+            Printer.println("Plano inválido, tente outro.");
         }
     }
 }
