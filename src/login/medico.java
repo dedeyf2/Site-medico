@@ -4,6 +4,8 @@ import java.util.HashSet;
 import java.util.Scanner;
 import java.util.Set;
 
+import wrapper.Printer;
+
 public class medico extends usuario {
     private Set<PlanoDeSaude> planosAceitos;
     private Set<Especialidade> especialidades;
@@ -20,37 +22,37 @@ public class medico extends usuario {
 
     @Override
     public void alterarPlano(PlanoDeSaude planoNovo) {
-        System.out.println("Digite 'A' para adicionar um plano ou 'R' para remover um plano:");
+        Printer.println("Digite 'A' para adicionar um plano ou 'R' para remover um plano:");
         String acao = scanner.nextLine().toUpperCase();
         try {
             if (acao.equals("A")) {
                 if (planosAceitos.contains(PlanoDeSaude.NENHUM)) {
                     planosAceitos.remove(PlanoDeSaude.NENHUM);
                 }
-                System.out.println("Escolha um plano de saúde para adicionar (HAPVIDA, AMIL, PORTO_SAUDE):");
+                Printer.println("Escolha um plano de saúde para adicionar (HAPVIDA, AMIL, PORTO_SAUDE):");
                 String entrada = scanner.nextLine().toUpperCase();
                 planoNovo = PlanoDeSaude.valueOf(entrada);
                 planosAceitos.add(planoNovo);
-                System.out.println("Plano " + planoNovo + " adicionado.");
+                Printer.println("Plano " + planoNovo + " adicionado.");
             } else if (acao.equals("R")) {
-                System.out.println("Escolha um plano de saúde para remover:");
+                Printer.println("Escolha um plano de saúde para remover:");
                 String entrada = scanner.nextLine().toUpperCase();
                 planoNovo = PlanoDeSaude.valueOf(entrada);
                 if (planosAceitos.remove(planoNovo)) {
-                    System.out.println("Plano " + planoNovo + " removido.");
+                    Printer.println("Plano " + planoNovo + " removido.");
                     if (planosAceitos.isEmpty()) {
                         planosAceitos.add(PlanoDeSaude.NENHUM);
-                        System.out.println("Nenhum plano cadastrado. Definindo como NENHUM.");
+                        Printer.println("Nenhum plano cadastrado. Definindo como NENHUM.");
                     }
                 } else {
-                    System.out.println("Este plano não estava cadastrado.");
+                    Printer.println("Este plano não estava cadastrado.");
                 }
             } else {
-                System.out.println("Opção inválida.");
+                Printer.println("Opção inválida.");
             }
             registro.atualizarUsuario(this);
         } catch (IllegalArgumentException e) {
-            System.out.println("Plano inválido, tente outro.");
+            Printer.println("Plano inválido, tente outro.");
         }
     }
 
