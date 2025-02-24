@@ -61,7 +61,6 @@ public class registro {
                 Printer.println("Escolha um plano de saúde: HAPVIDA, AMIL, PORTO_SAUDE ou NENHUM");
                 PlanoDeSaude plano = escolherPlano();
                 novoUsuario = new paciente(nome, idade, plano, email, senha);
-                usuarios.put(email, novoUsuario);
             } else if (tipo.equals("M")) {
                 Set<PlanoDeSaude> planosAceitos = new HashSet<>();
                 while (true) {
@@ -86,18 +85,16 @@ public class registro {
                     }
                 }
                 novoUsuario = new medico(nome, idade, email, PlanoDeSaude.NENHUM, Especialidade.CLINICO_GERAL, senha);
-                // Adiciona planos
                 ((medico) novoUsuario).getPlanosAceitos().addAll(planosAceitos);
-                // Lógica para especialidades: remove CLINICO_GERAL se outra for adicionada
                 if (!especialidades.isEmpty()) {
-                    ((medico) novoUsuario).getEspecialidades().clear(); // Remove o padrão
+                    ((medico) novoUsuario).getEspecialidades().clear();
                     ((medico) novoUsuario).getEspecialidades().addAll(especialidades);
                 }
-                usuarios.put(email, novoUsuario);
             } else {
                 Printer.println("Opção inválida!");
                 return;
             }
+            usuarios.put(email, novoUsuario);
             salvarUsuarios(usuarios);
             Printer.println("Usuário registrado com sucesso!");
         } catch (NumberFormatException e) {
@@ -121,15 +118,14 @@ public class registro {
     }
 
     public static Map<String, usuario> carregarUsuarios() {
-        File arquivo = new File("usuarios.json"); // Substitua pelo caminho correto
+        File arquivo = new File(ARQUIVO_JSON);
         if (!arquivo.exists() || arquivo.length() == 0) {
             return new HashMap<>();
         }
 
         try (FileReader reader = new FileReader(arquivo)) {
-            // Configuração do adaptador para polimorfismo
             RuntimeTypeAdapterFactory<usuario> adapter = RuntimeTypeAdapterFactory
-                .of(usuario.class, "tipo") // "tipo" é o campo discriminador
+                .of(usuario.class, "tipo")
                 .registerSubtype(paciente.class, "paciente")
                 .registerSubtype(medico.class, "medico");
 
@@ -139,7 +135,6 @@ public class registro {
 
             Type tipoMapa = new TypeToken<Map<String, usuario>>() {}.getType();
             Map<String, usuario> usuarios = gson.fromJson(reader, tipoMapa);
-
             return usuarios != null ? usuarios : new HashMap<>();
         } catch (IOException e) {
             Printer.println("Erro ao carregar usuários: " + e.getMessage());
@@ -159,18 +154,7 @@ public class registro {
     }
 
     public static void salvarUsuarios(Map<String, usuario> usuarios) {
-        File arquivo = new File("usuarios.json");
-
-        // Verifica e corrige o campo 'tipo' se necessário
-        for (usuario u : usuarios.values()) {
-            if (u.tipo == null || u.tipo.isEmpty()) {
-                if (u instanceof paciente) {
-                    u.tipo = "paciente";
-                } else if (u instanceof medico) {
-                    u.tipo = "medico";
-                }
-            }
-        }
+        File arquivo = new File(ARQUIVO_JSON);
 
         try (FileWriter writer = new FileWriter(arquivo)) {
             RuntimeTypeAdapterFactory<usuario> adapter = RuntimeTypeAdapterFactory
@@ -180,10 +164,17 @@ public class registro {
 
             Gson gson = new GsonBuilder()
                 .registerTypeAdapterFactory(adapter)
+                .serializeSpecialFloatingPointValues() // Adicionado para garantir robustez
                 .setPrettyPrinting()
                 .create();
 
-            gson.toJson(usuarios, writer);
+            // Serializar o mapa com o tipo correto
+            Type tipoMapa = new TypeToken<Map<String, usuario>>() {}.getType();
+            String jsonOutput = gson.toJson(usuarios, tipoMapa);
+            Printer.println("Salvando usuários: " + jsonOutput);
+            writer.write(jsonOutput);
+            writer.flush();
+            Printer.println("Usuários salvos com sucesso em " + ARQUIVO_JSON);
         } catch (IOException e) {
             Printer.println("Erro ao salvar usuários: " + e.getMessage());
             throw new RuntimeException("Falha ao salvar os usuários", e);
