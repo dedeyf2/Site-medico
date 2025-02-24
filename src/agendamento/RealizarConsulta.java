@@ -191,6 +191,19 @@ public class RealizarConsulta {
                 total += contas.get(i);
             }
             Printer.println("Total devido: R$" + total);
+
+            // Perguntar se deseja pagar
+            Printer.println("Deseja pagar a conta? (S/N)");
+            String resposta = scanner.nextLine().trim().toUpperCase();
+
+            if (resposta.equals("S")) {
+                // Remover todas as contas pendentes do paciente
+                contasPendentes.remove(paciente.getEmail());
+                salvarContasPendentes(); // Atualizar o JSON
+                Printer.println("Pagamento realizado com sucesso! Todas as contas foram quitadas.");
+            } else {
+                Printer.println("Voltando ao menu...");
+            }
         }
     }
 
