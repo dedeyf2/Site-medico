@@ -3,7 +3,6 @@ package login;
 import java.util.HashSet;
 import java.util.Scanner;
 import java.util.Set;
-
 import wrapper.Printer;
 
 public class medico extends usuario {
@@ -13,11 +12,11 @@ public class medico extends usuario {
 
     public medico(String nome, int idade, String email, PlanoDeSaude plano, Especialidade especialidadePadrao, String senha) {
         super(nome, idade, plano, email, senha);
-        this.tipo = "medico";
+        // Removido: this.tipo = "medico";
         this.planosAceitos = new HashSet<>();
         this.planosAceitos.add(PlanoDeSaude.NENHUM);
         this.especialidades = new HashSet<>();
-        this.especialidades.add(especialidadePadrao); // Padrão é CLINICO_GERAL
+        this.especialidades.add(especialidadePadrao);
     }
 
     @Override

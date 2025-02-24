@@ -1,7 +1,6 @@
 package login;
 
 import java.util.Scanner;
-
 import wrapper.Printer;
 
 public class paciente extends usuario {
@@ -9,7 +8,7 @@ public class paciente extends usuario {
 
     public paciente(String nome, int idade, PlanoDeSaude plano, String email, String senha) {
         super(nome, idade, plano, email, senha);
-        this.tipo ="paciente";
+        // Removido: this.tipo = "paciente";
     }
 
     @Override

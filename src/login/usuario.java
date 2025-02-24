@@ -9,7 +9,7 @@ public abstract class usuario {
     protected PlanoDeSaude plano;
     protected String email;
     protected String senhaHash;
-    protected String tipo;
+    public transient String tipo;
 
     public usuario(String nome, int idade, PlanoDeSaude plano, String email, String senha) {
         this.nome = nome;
@@ -19,6 +19,7 @@ public abstract class usuario {
         this.senhaHash = hashSenha(senha);
     }
 
+    // Getters e outros métodos permanecem iguais
     public String getNome() { return nome; }
     public int getIdade() { return idade; }
     public PlanoDeSaude getPlano() { return plano; }

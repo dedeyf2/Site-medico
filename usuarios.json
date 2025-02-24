@@ -26,5 +26,21 @@
     "email": "caio@gmail.com",
     "senhaHash": "03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4",
     "tipo": "medico"
+  },
+  "daniel@gmail.com": {
+    "nome": "daniel",
+    "idade": 20,
+    "plano": "HAPVIDA",
+    "email": "daniel@gmail.com",
+    "senhaHash": "03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4",
+    "tipo": "paciente"
+  },
+  "arthur@gmail.com": {
+    "nome": "arthur",
+    "idade": 20,
+    "plano": "NENHUM",
+    "email": "arthur@gmail.com",
+    "senhaHash": "03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4",
+    "tipo": "paciente"
   }
 }
