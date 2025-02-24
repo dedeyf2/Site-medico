@@ -8,11 +8,9 @@ import wrapper.Printer;
 public class medico extends usuario {
     private Set<PlanoDeSaude> planosAceitos;
     private Set<Especialidade> especialidades;
-    private transient Scanner scanner = new Scanner(System.in);
 
     public medico(String nome, int idade, String email, PlanoDeSaude plano, Especialidade especialidadePadrao, String senha) {
         super(nome, idade, plano, email, senha);
-        // Removido: this.tipo = "medico";
         this.planosAceitos = new HashSet<>();
         this.planosAceitos.add(PlanoDeSaude.NENHUM);
         this.especialidades = new HashSet<>();
@@ -21,6 +19,10 @@ public class medico extends usuario {
 
     @Override
     public void alterarPlano(PlanoDeSaude planoNovo) {
+        throw new UnsupportedOperationException("Use o método com Scanner como parâmetro.");
+    }
+
+    public void alterarPlano(PlanoDeSaude planoNovo, Scanner scanner) {
         Printer.println("Digite 'A' para adicionar um plano ou 'R' para remover um plano:");
         String acao = scanner.nextLine().toUpperCase();
         try {

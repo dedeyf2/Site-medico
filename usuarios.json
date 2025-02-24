@@ -1,9 +1,17 @@
 {
-  "caio@gmail.com": {
+  "arthur1@gmail.com": {
+    "tipo": "paciente",
+    "nome": "arthur",
+    "idade": 20,
+    "plano": "HAPVIDA",
+    "email": "arthur1@gmail.com",
+    "senhaHash": "5994471abb01112afcc18159f6cc74b4f511b99806da59b3caf5a9c173cacfc5"
+  },
+  "caio1@gmail.com": {
     "tipo": "medico",
     "planosAceitos": [
       "HAPVIDA",
-      "NENHUM"
+      "PORTO_SAUDE"
     ],
     "especialidades": [
       "NEURO"
@@ -11,15 +19,7 @@
     "nome": "caio",
     "idade": 20,
     "plano": "NENHUM",
-    "email": "caio@gmail.com",
-    "senhaHash": "03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4"
-  },
-  "arthur@gmail.com": {
-    "tipo": "paciente",
-    "nome": "arthur",
-    "idade": 20,
-    "plano": "NENHUM",
-    "email": "arthur@gmail.com",
-    "senhaHash": "03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4"
+    "email": "caio1@gmail.com",
+    "senhaHash": "5994471abb01112afcc18159f6cc74b4f511b99806da59b3caf5a9c173cacfc5"
   }
 }

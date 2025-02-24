@@ -171,7 +171,7 @@ public class registro {
             // Serializar o mapa com o tipo correto
             Type tipoMapa = new TypeToken<Map<String, usuario>>() {}.getType();
             String jsonOutput = gson.toJson(usuarios, tipoMapa);
-            Printer.println("Salvando usuários: " + jsonOutput);
+            Printer.println("Salvando usuários..." );
             writer.write(jsonOutput);
             writer.flush();
             Printer.println("Usuários salvos com sucesso em " + ARQUIVO_JSON);
